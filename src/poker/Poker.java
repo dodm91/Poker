@@ -6,8 +6,6 @@ public class Poker {
 
     private Baraja baraja;
     private Jugador[] jugadores;
-    private int ronda;
-    private Jugador turno;
     private boolean fase;
 
     public Poker() {
@@ -18,8 +16,6 @@ public class Poker {
             int j = i + 1;
             this.jugadores[i] = new Jugador("Jugador" + j);
         }
-        this.ronda = 0;
-        this.turno = turno;
         this.fase = fase;
     }
 
@@ -37,22 +33,6 @@ public class Poker {
 
     public void setJugadores(Jugador[] jugadores) {
         this.jugadores = jugadores;
-    }
-
-    public int getRonda() {
-        return ronda;
-    }
-
-    public void setRonda(int ronda) {
-        this.ronda = ronda;
-    }
-
-    public Jugador getTurno() {
-        return turno;
-    }
-
-    public void setTurno(Jugador turno) {
-        this.turno = turno;
     }
 
     public boolean isFase() {
@@ -75,17 +55,16 @@ public class Poker {
 
         for (int i = 0; i < jugadores.length; i++) {
 
-
             ArrayList<Carta> nuevascartas = new ArrayList<Carta>();
 
-            for (int j = 0; j < jugadores[i].descartar().size(); j++) {
-                nuevascartas.add(j,jugadores[i].descartar().get(j));
+            for (int j = 0; j < jugadores[i].getMano().descartar().size(); j++) {
+                nuevascartas.add(j,jugadores[i].getMano().descartar().get(j));
             }
 
-            for (int k = 0; k < baraja.repartir(jugadores[i].descartar().size() - 5).size(); k++) {
-                nuevascartas.add(k, baraja.repartir(jugadores[i].descartar().size() - 5).get(k));
+            for (int k = 0; k < baraja.repartir(jugadores[i].getMano().descartar().size() - 5).size(); k++) {
+                nuevascartas.add(k, baraja.repartir(jugadores[i].getMano().descartar().size() - 5).get(k));
             }
-            jugadores[i].cogerCartas(nuevascartas);
+            jugadores[i].getMano().setCartas(nuevascartas);
         }
     }
 
@@ -102,6 +81,6 @@ public class Poker {
 
     @Override
     public String toString() {
-        return "Poker{" + "baraja=" + baraja + ", jugadores=" + jugadores + ", ronda=" + ronda + ", turno=" + turno + ", fase=" + fase + '}';
+        return "Poker{" + "baraja=" + baraja + ", jugadores=" + jugadores + ", fase=" + fase + '}';
     }
 }

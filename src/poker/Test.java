@@ -16,22 +16,23 @@ public class Test {
         System.out.println(poker.getBaraja().toString());
 
         for (int i = 0; i < poker.getJugadores().length; i++) {
-            poker.getJugadores()[i].cogerCartas(poker.repartir(5));
+            poker.getJugadores()[i].getMano().setCartas(poker.repartir(5));
             System.out.println(poker.getJugadores()[i].getId());
-            for (int j = 0; j < poker.getJugadores()[i].mostrarCartas().size(); j++) {
-                System.out.println(poker.getJugadores()[i].mostrarCartas().get(j).toString());
+            for (int j = 0; j < poker.getJugadores()[i].getMano().getCartas().size(); j++) {
+                System.out.println(poker.getJugadores()[i].getMano().getCartas().get(j).toString());
             }
-        }      
+        }
 
-         System.out.println("FASE DESCARTES");
+        System.out.println("FASE DESCARTES");
 
-         poker.iniciarFaseDescartes();
+        poker.iniciarFaseDescartes();
 
-         for (int i = 0; i < poker.getJugadores().length; i++) {
-         System.out.println(poker.getJugadores()[i].getId());
-         for (int j = 0; j < poker.getJugadores()[i].mostrarCartas().size(); j++) {
-         System.out.println(poker.getJugadores()[i].mostrarCartas().get(j).toString());
-         }
-         }   
+        for (int i = 0; i < poker.getJugadores().length; i++) {
+            System.out.println(poker.getJugadores()[i].getId());
+            for (int j = 0; j < poker.getJugadores()[i].getMano().getCartas().size(); j++) {
+                System.out.println(poker.getJugadores()[i].getMano().getCartas().get(j).toString());
+            }
+        }
+
     }
 }

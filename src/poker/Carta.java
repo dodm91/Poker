@@ -36,9 +36,11 @@ public class Carta {
         this.valor = valor;
     }
 
-    public void iguales(Carta carta1, Carta carta2) {
-        if (carta1 == carta2) {
+    public boolean iguales(Carta c) {
+        if (this.numero.equals(c.getNumero())) {
+            return true;
         } else {
+            return false;
         }
     }
 

@@ -6,12 +6,16 @@ public class Jugador {
 
     private String id;
     private int manosGanadas;
-    private ArrayList<Carta> cartas;
+    private Mano mano;
+    private int descartadas;
+    private int puntuacion;
 
     public Jugador(String id) {
         this.id = id;
         this.manosGanadas = 0;
-        this.cartas = new ArrayList<Carta>();
+        this.mano = new Mano();
+        this.descartadas = 0;
+        this.puntuacion = 0;
     }
 
     public String getId() {
@@ -30,25 +34,28 @@ public class Jugador {
         this.manosGanadas = manosGanadas;
     }
 
-    ArrayList<Carta> descartar() {
-        int descartes = (int)(Math.random()*4+1);
-        ArrayList<Carta> restantes = new ArrayList<Carta>();
-        
-        for (int i = 0; i < descartes; i++) {
-            this.cartas.remove(0);
-        }
-        for (int i = 0; i < this.cartas.size(); i++) {
-            restantes.add(i,this.cartas.get(0));
-        }
-        return restantes;
+    public Mano getMano() {
+        return mano;
     }
 
-    void cogerCartas(ArrayList<Carta> cartas) {
-        this.cartas = cartas;
+    public void setMano(Mano mano) {
+        this.mano = mano;
     }
 
-    public ArrayList<Carta> mostrarCartas() {
-        return cartas;
+    public int getDescartadas() {
+        return descartadas;
+    }
+
+    public void setDescartadas(int descartadas) {
+        this.descartadas = descartadas;
+    }
+
+    public int getPuntuacion() {
+        return puntuacion;
+    }
+
+    public void setPuntuacion(int puntuacion) {
+        this.puntuacion = puntuacion;
     }
 
     /*
