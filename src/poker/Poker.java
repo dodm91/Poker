@@ -1,12 +1,12 @@
 package poker;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Poker {
 
     private Baraja baraja;
     private Jugador[] jugadores;
-    private boolean fase;
+    private boolean faseDescartes;
 
     public Poker() {
         this.baraja = new Baraja();
@@ -16,7 +16,7 @@ public class Poker {
             int j = i + 1;
             this.jugadores[i] = new Jugador("Jugador" + j);
         }
-        this.fase = fase;
+        this.faseDescartes = false;
     }
 
     public Baraja getBaraja() {
@@ -36,51 +36,74 @@ public class Poker {
     }
 
     public boolean isFase() {
-        return fase;
+        return faseDescartes;
     }
 
-    public void setFase(boolean fase) {
-        this.fase = fase;
+    public void setFaseDescartes(boolean faseDescartes) {
+        this.faseDescartes = faseDescartes;
+    }
+
+    public Jugador jugar() {
+        Jugador ganador;
+
+        this.barajar();
+        this.repartir();
+        this.faseDescartes();
+        this.repartir();
+        ganador = this.calcularGanador();
+        ganador.setManosGanadas();
+        return ganador;
     }
 
     void barajar() {
         baraja.barajar();
     }
 
-    public ArrayList<Carta> repartir(int numCartasARepartir) {
-        return baraja.repartir(numCartasARepartir);
-    }
-
-    void iniciarFaseDescartes() {
+    public void repartir() {
+        int num;
 
         for (int i = 0; i < jugadores.length; i++) {
-
-            ArrayList<Carta> nuevascartas = new ArrayList<Carta>();
-
-            for (int j = 0; j < jugadores[i].getMano().descartar().size(); j++) {
-                nuevascartas.add(j,jugadores[i].getMano().descartar().get(j));
+            if (!this.faseDescartes) {
+                num = 5;
+            } else {
+                num = this.jugadores[i].getDescartadas();
             }
-
-            for (int k = 0; k < baraja.repartir(jugadores[i].getMano().descartar().size() - 5).size(); k++) {
-                nuevascartas.add(k, baraja.repartir(jugadores[i].getMano().descartar().size() - 5).get(k));
-            }
-            jugadores[i].getMano().setCartas(nuevascartas);
+            this.jugadores[i].cogerCartas(baraja.repartir(num));
         }
     }
 
-    void calcularPuntuaciones() {
-        int[] puntuaciones = new int[5];
+    public void faseDescartes() {
         for (int i = 0; i < jugadores.length; i++) {
-           // puntuaciones[i] = jugadores[i].calcularPuntuacion();
+            this.jugadores[i].descartar();
         }
+        this.faseDescartes = true;
     }
 
-    Jugador calcularGanador() {
-        return calcularGanador();
+    public Jugador calcularGanador() {
+        int j1, j2, j3, j4;
+
+        for (int i = 0; i < 4; i++) {
+            this.jugadores[i].calcularPuntuacion();
+        }
+        j1 = this.jugadores[0].getPuntuacion();
+        j2 = this.jugadores[1].getPuntuacion();
+        j3 = this.jugadores[2].getPuntuacion();
+        j4 = this.jugadores[3].getPuntuacion();
+
+        if (j1 > j2 && j1 > j3 && j1 > j4) {
+            return this.jugadores[0];
+        }
+        if (j2 > j1 && j2 > j3 && j2 > j4) {
+            return this.jugadores[1];
+        }
+        if (j3 > j1 && j3 > j2 && j3 > j4) {
+            return this.jugadores[2];
+        }
+        return this.jugadores[3];
     }
 
     @Override
     public String toString() {
-        return "Poker{" + "baraja=" + baraja + ", jugadores=" + jugadores + ", fase=" + fase + '}';
+        return "Poker{" + "baraja=" + baraja + ", jugadores=" + jugadores + ", fase=" + faseDescartes + '}';
     }
 }

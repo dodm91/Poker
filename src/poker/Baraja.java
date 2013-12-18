@@ -5,12 +5,10 @@ import java.util.*;
 public class Baraja {
 
     private ArrayList<Carta> cartas;
-    private int index;
 
     public Baraja() {
 
         int contador = 0;
-        this.index = 0;
         
         String nums[] = {"DOS", "TRES", "CUATRO", "CINCO", "SEIS", 
             "SIETE", "OCHO", "NUEVE", "DIEZ", "J", "Q", "K", "AS"};

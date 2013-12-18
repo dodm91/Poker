@@ -30,8 +30,8 @@ public class Jugador {
         return manosGanadas;
     }
 
-    public void setManosGanadas(int manosGanadas) {
-        this.manosGanadas = manosGanadas;
+    public void setManosGanadas() {
+        this.manosGanadas = manosGanadas + 1;
     }
 
     public Mano getMano() {
@@ -58,45 +58,35 @@ public class Jugador {
         this.puntuacion = puntuacion;
     }
 
-    /*
-     public int calcularPuntuacion() {
-     int puntos = 0;
-     int jugada = 0;
-     int[] valores = new int[5];
-     for (int i = 0; i < this.mostrarCartas().length; i++) {
-     valores[i] = this.mostrarCartas()[i].getValor();
-     }
-     for (int i = 0; i < valores.length; i++) {
-     puntos = puntos + valores[i];
-     }
-     Arrays.sort(valores);
+    public void descartar() {
+        this.descartadas = this.mano.descartar();
+    }
 
-     if (valores[0] == valores[1] || valores[0] == valores[2] || valores[0] == valores[3] || valores[0] == valores[4]) {
-     jugada = 1;
-     }
-     if (valores[1] == valores[2] || valores[1] == valores[3] || valores[1] == valores[4]) {
-     jugada = 1;
-     }
-     if (valores[2] == valores[3] || valores[2] == valores[4]) {
-     jugada = 1;
-     }
-     if (valores[3] == valores[4]) {
-     jugada = 1;
-     }
+    public void cogerCartas(ArrayList<Carta> cartas) {
+        if (cartas.size() == 5) {
+            this.mano.setCartas(cartas);
+        } else {
+            for (Carta c : cartas) {
+                this.mano.addCarta(c);
+            }
+        }
+    }
+    
+        public void calcularPuntuacion() {
+        this.puntuacion = this.mano.getValor();
+    }
 
-     switch (jugada) {
-     case 1:
-     puntos = puntos + 200;
-     break;
-     default:
-     break;
-     }
-
-     return puntos;
-     }
-     */
     @Override
     public String toString() {
-        return "Jugador{" + "id=" + id + '}';
+        String cadena = "Jugador[";
+
+        cadena += "Id: " + this.id + ", ";
+        cadena += "ManosGanadas: " + this.manosGanadas + ", ";
+        cadena += "Descartadas: " + this.descartadas + ", ";
+        cadena += "Puntuación: " + this.puntuacion + ", ";
+        cadena += this.mano.toString();
+        cadena += "]";
+
+        return cadena;
     }
 }

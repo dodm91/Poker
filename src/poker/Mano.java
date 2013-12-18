@@ -1,16 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package poker;
 
-import java.util.Collections;
-import java.util.ArrayList;
+import java.util.*;
 
-/**
- *
- * @author Angel
- */
 public class Mano {
 
     private ArrayList<Carta> cartas;
@@ -37,15 +28,112 @@ public class Mano {
         this.valor = valor;
     }
 
-    ArrayList<Carta> descartar() {
-        int descartes = (int) (Math.random() * 4 + 1);
+    public void addCarta(Carta carta) {
+        this.cartas.add(carta);
+        this.calcularValor();
+    }
+
+    public void removeCarta(Carta carta) {
+        this.cartas.remove(carta);
+    }
+
+    public Carta getCarta(int n) {
+        return this.cartas.get(n);
+    }
+
+    private ArrayList<Carta> copiarMano() {
+        ArrayList<Carta> copia = new ArrayList<Carta>();
+
+        for (Carta c : this.cartas) {
+            copia.add(c);
+        }
+
+        return copia;
+    }
+
+    public int descartar() {
         ArrayList<Carta> restantes = new ArrayList<Carta>();
 
-        descartes = 5 - descartes;
-
-        for (int i = 0; i < descartes; i++) {
-            restantes.add(i, this.cartas.get(i));
+        while (this.cartas.size() > 0) {
+            this.repetidas(this.cartas.get(0), restantes);
         }
-        return restantes;
+
+        this.cartas = restantes;
+        return (5 - this.cartas.size());
+    }
+
+    private void repetidas(Carta c, ArrayList<Carta> restantes) {
+        boolean repetida = false;
+        int cnt = 0;
+        Carta actual;
+
+        this.cartas.remove(c);
+        while (this.cartas.size() > 0 && cnt < this.cartas.size()) {
+            actual = this.cartas.get(cnt);
+            if (actual.iguales(c)) {
+                restantes.add(actual);
+                this.cartas.remove(actual);
+                repetida = true;
+            } else {
+                cnt++;
+            }
+        }
+        if (repetida) {
+            restantes.add(c);
+        }
+    }
+
+    private void calcularValor() {
+        int valor = 0;
+
+        for (Carta c : this.cartas) {
+            valor += c.getValor();
+        }
+
+        ArrayList<Carta> manoActual = this.copiarMano();
+
+        int descartes = this.descartar();
+
+
+        if (descartes == 0) {
+            valor += 400;
+        } else if (descartes == 2) {
+            valor += 300;
+        } else if (descartes == 3) {
+            valor += 100;
+        } else if (descartes == 1) {
+            if (this.esPoker()) {
+                valor += 500;
+            } else {
+                valor += 200;
+            }
+        }
+
+        this.cartas = manoActual;
+        this.valor = valor;
+    }
+
+    private boolean esPoker() {
+        if (this.cartas.get(0).iguales(this.cartas.get(1))
+                && this.cartas.get(0).iguales(this.cartas.get(2))
+                && this.cartas.get(0).iguales(this.cartas.get(3))) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        String cadena = "Mano[";
+
+        for (Carta c : this.cartas) {
+            cadena += c.toString();
+            if (c != this.cartas.get(this.cartas.size() - 1)) {
+                cadena += ", ";
+            }
+        }
+        cadena += "]";
+
+        return cadena;
     }
 }
